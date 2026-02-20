@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <!-- Full bleed background (maskable icons need full coverage) -->
+  <rect width="192" height="192" fill="#1976D2"/>
+  <!-- Water droplet (slightly smaller to fit safe zone) -->
+  <path
+    d="M96 36 C96 36 60 86 60 116 C60 138.1 76.9 155 96 155 C115.1 155 132 138.1 132 116 C132 86 96 36 96 36 Z"
+    fill="white"
+    opacity="0.95"
+  />
+  <!-- Inner highlight -->
+  <path
+    d="M96 84 C96 84 78 108 82 124 C85 136 110 136 112 123 C115 107 96 84 96 84 Z"
+    fill="#90CAF9"
+    opacity="0.7"
+  />
+  <!-- Top shine -->
+  <ellipse cx="84" cy="98" rx="4" ry="9" fill="white" opacity="0.5" transform="rotate(-20 84 98)"/>
+</svg>
