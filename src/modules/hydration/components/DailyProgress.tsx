@@ -8,6 +8,7 @@ interface DailyProgressProps {
   percentage: number
   selectedDate: string
   onDateChange: (date: string) => void
+  dayStartHour: number
 }
 
 export function DailyProgress({
@@ -16,8 +17,9 @@ export function DailyProgress({
   percentage,
   selectedDate,
   onDateChange,
+  dayStartHour,
 }: DailyProgressProps) {
-  const isToday = selectedDate === getTodayDateStr()
+  const isToday = selectedDate === getTodayDateStr(dayStartHour)
 
   return (
     <div className="flex flex-col items-center gap-4 px-4 py-2">
@@ -36,10 +38,10 @@ export function DailyProgress({
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-base font-semibold text-on-surface dark:text-on-surface-dark px-2 py-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-          onClick={() => onDateChange(getTodayDateStr())}
+          onClick={() => onDateChange(getTodayDateStr(dayStartHour))}
           aria-label="Go to today"
         >
-          {formatDisplayDate(selectedDate)}
+          {formatDisplayDate(selectedDate, dayStartHour)}
         </motion.button>
 
         <button

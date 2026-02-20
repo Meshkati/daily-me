@@ -4,14 +4,14 @@ import { getTodayDateStr } from '../../../shared/utils/date'
 
 export function useHydration() {
   const store = useHydrationStore()
-  const { dailyGoal, cupSize } = useSettingsStore()
+  const { dailyGoal, cupSize, dayStartHour } = useSettingsStore()
 
   const totalToday = store.summary?.total_ml ?? 0
   const percentage = Math.min(100, Math.round((totalToday / dailyGoal) * 100))
 
   const totalCups = Math.ceil(dailyGoal / cupSize)
   const cupsConsumed = Math.min(totalCups, Math.floor(totalToday / cupSize))
-  const isToday = store.selectedDate === getTodayDateStr()
+  const isToday = store.selectedDate === getTodayDateStr(dayStartHour)
 
   return {
     ...store,
@@ -21,6 +21,7 @@ export function useHydration() {
     cupsConsumed,
     dailyGoal,
     cupSize,
+    dayStartHour,
     isToday,
   }
 }

@@ -60,7 +60,8 @@ export const useHydrationStore = create<HydrationState>((set, get) => ({
 
   loadWeekHistory: async () => {
     try {
-      const dates = getLast7Days()
+      const { dayStartHour } = useSettingsStore.getState()
+      const dates = getLast7Days(dayStartHour)
       const summaries = await getDailySummaries(dates)
       const { dailyGoal } = useSettingsStore.getState()
       const weekHistory = dates.map((date, i) => {
@@ -127,8 +128,8 @@ export const useHydrationStore = create<HydrationState>((set, get) => ({
   },
 
   resetToday: async () => {
-    const today = getTodayDateStr()
-    const { dailyGoal } = useSettingsStore.getState()
+    const { dailyGoal, dayStartHour } = useSettingsStore.getState()
+    const today = getTodayDateStr(dayStartHour)
 
     await deleteAllLogsForDate(today)
     const newSummary = await recalculateSummary(today, dailyGoal)

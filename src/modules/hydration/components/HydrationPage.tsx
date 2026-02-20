@@ -8,6 +8,7 @@ import { LogList } from './LogList'
 import { HydrationHistory } from './HydrationHistory'
 import { Confetti } from './Confetti'
 import { useHydration } from '../hooks/useHydration'
+import { useSettingsStore } from '../store/settingsStore'
 import { getTodayDateStr } from '../../../shared/utils/date'
 
 interface HydrationPageProps {
@@ -36,7 +37,10 @@ export function HydrationPage({ onOpenSettings }: HydrationPageProps) {
     dailyGoal,
     cupSize,
     isToday,
+    dayStartHour,
   } = useHydration()
+
+  const { isLoaded } = useSettingsStore()
 
   // Pull-to-refresh
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -45,9 +49,10 @@ export function HydrationPage({ onOpenSettings }: HydrationPageProps) {
   const pulling = useRef(false)
 
   useEffect(() => {
-    loadDateData(getTodayDateStr())
+    if (!isLoaded) return
+    loadDateData(getTodayDateStr(dayStartHour))
     loadWeekHistory()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isLoaded]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAddEntry = async (ml: number) => {
     const wasGoalReached = summary?.goal_reached ?? false
@@ -135,6 +140,7 @@ export function HydrationPage({ onOpenSettings }: HydrationPageProps) {
           percentage={percentage}
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
+          dayStartHour={dayStartHour}
         />
 
         {/* Cup grid */}
@@ -167,6 +173,7 @@ export function HydrationPage({ onOpenSettings }: HydrationPageProps) {
             history={weekHistory}
             onDaySelect={setSelectedDate}
             selectedDate={selectedDate}
+            dayStartHour={dayStartHour}
           />
         </div>
 

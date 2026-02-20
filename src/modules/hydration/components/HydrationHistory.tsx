@@ -6,12 +6,14 @@ interface HydrationHistoryProps {
   history: (DailySummary | null)[]
   onDaySelect: (date: string) => void
   selectedDate: string
+  dayStartHour: number
 }
 
 export function HydrationHistory({
   history,
   onDaySelect,
   selectedDate,
+  dayStartHour,
 }: HydrationHistoryProps) {
   if (history.length === 0) return null
 
@@ -38,7 +40,7 @@ export function HydrationHistory({
               style={{ transformOrigin: 'bottom' }}
               className="flex-1 flex flex-col items-center gap-1 group"
               onClick={() => onDaySelect(summary.date)}
-              aria-label={`${formatDayLabel(summary.date)}: ${summary.total_ml}ml`}
+              aria-label={`${formatDayLabel(summary.date, dayStartHour)}: ${summary.total_ml}ml`}
               role="listitem"
             >
               {/* Bar */}
@@ -65,7 +67,7 @@ export function HydrationHistory({
                     : 'text-on-surface-muted'
                 }`}
               >
-                {formatDayLabel(summary.date)}
+                {formatDayLabel(summary.date, dayStartHour)}
               </span>
             </motion.button>
           )

@@ -6,13 +6,14 @@ import { useSettingsStore } from '../hydration/store/settingsStore'
 import { useHydrationStore } from '../hydration/store/hydrationStore'
 import { PRESET_GOALS, PRESET_CUP_SIZES } from '../hydration/constants'
 import { getAllLogs } from '../../shared/db'
+import { formatHour } from '../../shared/utils/date'
 
 interface SettingsPageProps {
   onBack: () => void
 }
 
 export function SettingsPage({ onBack }: SettingsPageProps) {
-  const { dailyGoal, cupSize, theme, setDailyGoal, setCupSize, setTheme } =
+  const { dailyGoal, cupSize, theme, dayStartHour, setDailyGoal, setCupSize, setTheme, setDayStartHour } =
     useSettingsStore()
   const { resetToday } = useHydrationStore()
 
@@ -147,6 +148,33 @@ export function SettingsPage({ onBack }: SettingsPageProps) {
               </button>
             ))}
           </div>
+        </Card>
+
+        {/* Day Start Time */}
+        <Card className="p-4 flex flex-col gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-on-surface dark:text-on-surface-dark">
+              Day Start Time
+            </h2>
+            <p className="text-xs text-on-surface-muted">
+              When does your tracking day begin? Useful for Ramadan or shift schedules.
+            </p>
+          </div>
+          <select
+            value={dayStartHour}
+            onChange={(e) => {
+              const val = parseInt(e.target.value, 10)
+              setDayStartHour(val)
+              toast.success(`Day starts at ${formatHour(val)}`)
+            }}
+            className="bg-surface-variant dark:bg-surface-variant-dark rounded-xl px-3 py-2.5 text-sm text-on-surface dark:text-on-surface-dark outline-none focus:ring-2 focus:ring-primary"
+          >
+            {Array.from({ length: 24 }, (_, h) => (
+              <option key={h} value={h}>
+                {formatHour(h)}{h === 0 ? ' (default)' : ''}
+              </option>
+            ))}
+          </select>
         </Card>
 
         {/* Data Management */}
